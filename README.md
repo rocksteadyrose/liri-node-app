@@ -24,4 +24,4 @@ LIRI is a Language Interpretation and Recognition Interface command line node ap
  
  * "liri do-what-it-says" uses the fs Node package to take the text inside of random.txt and run "spotify-this-song".
  
- * Liri also outputs and appends ach command response to a .txt file called log.txt.
+ * Liri also outputs and appends each command response to a .txt file called log.txt.
