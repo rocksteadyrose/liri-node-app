@@ -9,7 +9,7 @@ LIRI is a Language Interpretation and Recognition Interface command line node ap
     * Song name
     * Album
     * Song preview
--- If no songname is requested, Liri will retrieve 'The Sign' by Ace of Base
+-- If no song name is requested, Liri will retrieve 'The Sign' by Ace of Base
 
 * "liri movie-this 'moviename'" retrieves the following from the OMDB API:
    * Title of the movie
