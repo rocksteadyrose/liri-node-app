@@ -1,5 +1,6 @@
 //NPM INIT creates packaged json
 //NPM INSTALL
+
 require('dotenv').config();
 
 var keys = require("./keys.js");
@@ -14,22 +15,10 @@ var inputs = process.argv;
 var command = inputs[2];
 var addtlCommands = "";
 
-for (var i = 3; i < inputs.length; i++) {
-    if (i > 3 && i < inputs.length) {
-        addtlCommands = addtlCommands + "+" + inputs[i];
-    } else {
+addtlCommands = process.argv.slice(3).join('+');
 
-        addtlCommands += inputs[i];
-
-    }
-}
-
-if (addtlCommands.indexOf('\'') >= 0) {
-    console.log(true)
-    // addtlCommands.split("'")
-    // console.log(addtlCommands2)
-    // spotifyThisSong(addtlCommands2);
-
+if (command === undefined) {
+    console.log("==========================================" + "\r\n" + "\r\n" + "Please enter a Liri command: my-tweets, spotify-this-song, movie-this, or do-what-it-says." + "\r\n" + "\r\n" + "==========================================")
 }
 
 if (command === "my-tweets") {
@@ -53,7 +42,6 @@ function myTweets() {
     var myTweets2 = [];
 
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
-        console.log(tweets)
 
         if (!error) {
 
@@ -110,23 +98,48 @@ function movieThis(movieName) {
         if (!error && response.statusCode === 200) {
         }
 
-        var movieTitle = "=====================================" + "\r\n" + "\r\n" + "Title: " + JSON.parse(body).Title + "\r\n" + "\r\n" + "=====================================";
-        var release = "=====================================" + "\r\n" + "\r\n" + "Release year: " + JSON.parse(body).Released + "\r\n" + "\r\n" + "=====================================";
-        var IMDBrating = "=====================================" + "\r\n" + "\r\n" + "IMDB rating: " + JSON.parse(body).imdbRating + "\r\n" + "\r\n" + "=====================================";
-        var rottenTomatoes = "=====================================" + "\r\n" + "\r\n" + "Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value + "\r\n" + "\r\n" + "=====================================";
-        var country = "=====================================" + "\r\n" + "\r\n" + "Country: " + JSON.parse(body).Country + "\r\n" + "\r\n" + "=====================================";
-        var language = "=====================================" + "\r\n" + "\r\n" + "Language: " + JSON.parse(body).Language + "\r\n" + "\r\n" + "=====================================";
-        var plot = "=====================================" + "\r\n" + "\r\n" + "Plot: " + JSON.parse(body).Plot + "\r\n" + "\r\n" + "=====================================";
-        var actors = "=====================================" + "\r\n" + "\r\n" + "Actors: " + JSON.parse(body).Actors + "\r\n" + "\r\n" + "=====================================";
+        //If it has a Rotten Tomatoes score
+        if (JSON.parse(body).Ratings[1] && JSON.parse(body).Ratings[1].Value) {
 
-        var movieInfo = movieTitle + release + IMDBrating + rottenTomatoes + country + language + plot + actors;
+            var body = JSON.parse(body);
 
-        console.log(movieInfo);
+            var movieTitle = "=====================================" + "\r\n" + "\r\n" + "Title: " + body.Title + "\r\n" + "\r\n" + "=====================================";
+            var release = "=====================================" + "\r\n" + "\r\n" + "Release year: " + body.Year + "\r\n" + "\r\n" + "=====================================";
+            var IMDBrating = "=====================================" + "\r\n" + "\r\n" + "IMDB rating: " + body.imdbRating + "\r\n" + "\r\n" + "=====================================";
+            var rottenTomatoes = "=====================================" + "\r\n" + "\r\n" + "Rotten Tomatoes Rating: " + body.Ratings[1].Value + "\r\n" + "\r\n" + "=====================================";
+            var country = "=====================================" + "\r\n" + "\r\n" + "Country: " + body.Country + "\r\n" + "\r\n" + "=====================================";
+            var language = "=====================================" + "\r\n" + "\r\n" + "Language: " + body.Language + "\r\n" + "\r\n" + "=====================================";
+            var plot = "=====================================" + "\r\n" + "\r\n" + "Plot: " + body.Plot + "\r\n" + "\r\n" + "=====================================";
+            var actors = "=====================================" + "\r\n" + "\r\n" + "Actors: " + body.Actors + "\r\n" + "\r\n" + "=====================================";
+            var movieInfo = movieTitle + release + IMDBrating + rottenTomatoes + country + language + plot + actors;
 
-        logFile(movieInfo);
+            console.log(movieInfo);
+
+            logFile(movieInfo);
+        }
+
+        //If it doesn't have a Rotten Tomatoes score
+
+        else {
+
+            var body = JSON.parse(body);
+
+            var movieTitle = "=====================================" + "\r\n" + "\r\n" + "Title: " + body.Title + "\r\n" + "\r\n" + "=====================================";
+            var release = "=====================================" + "\r\n" + "\r\n" + "Release year: " + body.Year + "\r\n" + "\r\n" + "=====================================";
+            var IMDBrating = "=====================================" + "\r\n" + "\r\n" + "IMDB rating: " + body.imdbRating + "\r\n" + "\r\n" + "=====================================" + "\r\n" + "\r\n" + "Rotten Tomatoes Rating: Not listed" + "\r\n" + "\r\n" + "=====================================";
+            var country = "=====================================" + "\r\n" + "\r\n" + "Country: " + body.Country + "\r\n" + "\r\n" + "=====================================";
+            var language = "=====================================" + "\r\n" + "\r\n" + "Language: " + body.Language + "\r\n" + "\r\n" + "=====================================";
+            var plot = "=====================================" + "\r\n" + "\r\n" + "Plot: " + body.Plot + "\r\n" + "\r\n" + "=====================================";
+            var actors = "=====================================" + "\r\n" + "\r\n" + "Actors: " + body.Actors + "\r\n" + "\r\n" + "=====================================";
+
+            var movieInfo = movieTitle + release + IMDBrating + country + language + plot + actors;
+
+            console.log(movieInfo);
+
+            logFile(movieInfo);
+        }
 
     });
-
 }
 
 function doWhatItSays() {
